@@ -79,8 +79,15 @@ public class AdicionarTela extends javax.swing.JFrame {
         );
 
         jToggleButton2.setText("jToggleButton2");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+        scrollPanel.add(jToggleButton2);
 
         jToggleButton1.setText("jToggleButton1");
+        scrollPanel.add(jToggleButton1);
 
         jButton9.setText("jButton1");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +152,10 @@ public class AdicionarTela extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     /**
      * @param args the command line arguments
