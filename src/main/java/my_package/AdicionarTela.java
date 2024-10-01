@@ -31,8 +31,8 @@ public class AdicionarTela extends javax.swing.JFrame {
         removeButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         scrollPanel = new java.awt.ScrollPane();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        ProductPanel productPanel = new ProductPanel();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,9 +76,7 @@ public class AdicionarTela extends javax.swing.JFrame {
                 .addGap(17, 17, 17))
         );
 
-        jToggleButton2.setText("jToggleButton2");
-
-        jToggleButton1.setText("jToggleButton1");
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +100,7 @@ public class AdicionarTela extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
+        scrollPanel.add(productPanel);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -153,8 +152,7 @@ public class AdicionarTela extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JButton editButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
+
     private javax.swing.JButton removeButton;
     private java.awt.ScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
