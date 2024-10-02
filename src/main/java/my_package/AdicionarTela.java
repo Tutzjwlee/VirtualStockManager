@@ -105,9 +105,8 @@ public class AdicionarTela extends javax.swing.JFrame {
                 .addGap(60, 60, 60))
         );
         insidePanel.setLayout(new BoxLayout(insidePanel, BoxLayout.Y_AXIS));
-    
+        
         insidePanel.add(productPanel);
-        insidePanel.add(productPanel1);
         scrollPanel.add(insidePanel);
         
 
