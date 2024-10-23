@@ -156,27 +156,6 @@ public class AdicionarTela extends javax.swing.JFrame {
             }
         });
 
-            ProductDatabase database = new ProductDatabase();
-            String filePath = "path_to_your_file.txt";  // Substitua pelo caminho do arquivo
-    
-            // Carregar os dados do arquivo
-            database.loadFromFile(filePath);
-    
-            // Exibir os registros carregados
-            System.out.println("Registros carregados:");
-            for (ProductEntry entry : database.getEntries()) {
-                System.out.println(entry);
-            }
-    
-            // Adicionar uma nova entrada
-            ProductEntry newEntry = new ProductEntry(1001, 50, 12.50, 10.00, "10/10/2024 Entry", 5, "added");
-            database.addEntry(newEntry, filePath);
-    
-            // Remover uma entrada
-            database.removeEntryById(1001, filePath);
-    
-            // Editar uma entrada
-            database.editEntryById(0, 500, 15.75, 14.00, "11/10/2024 Exit", 10, "subtracted", filePath);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
