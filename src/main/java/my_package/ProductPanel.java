@@ -35,6 +35,8 @@ public class ProductPanel extends javax.swing.JPanel {
         exitText1 = new javax.swing.JTextField();
         exitText2 = new javax.swing.JTextField();
 
+        
+
         productText.setText("Product Name");
         productText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
