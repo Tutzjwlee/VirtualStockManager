@@ -4,8 +4,16 @@
  */
 package my_package;
 
+import java.awt.Dimension;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -33,8 +41,8 @@ public class AdicionarTela extends javax.swing.JFrame {
         editButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
-        JPanel insidePanel = new javax.swing.JPanel();
-        scrollPanel = new java.awt.ScrollPane();
+         JPanel insidePanel = new javax.swing.JPanel();
+        JScrollPane scrollPanel = new JScrollPane(); // Altere aqui para JScrollPane
     
         ProductPanel productPanel = new ProductPanel();
         ProductPanel productPanel1 = new ProductPanel();
@@ -63,7 +71,7 @@ public class AdicionarTela extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
+                .addGap(325, 325, 325)
                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -84,14 +92,15 @@ public class AdicionarTela extends javax.swing.JFrame {
 
    
 
+              // Configuração do layout da janela principal para centralizar o jPanel1 e o scrollPanel
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(50, 50, 50))
         );
@@ -106,10 +115,12 @@ public class AdicionarTela extends javax.swing.JFrame {
         );
         insidePanel.setLayout(new BoxLayout(insidePanel, BoxLayout.Y_AXIS));
         
-        insidePanel.add(productPanel);
-        insidePanel.add(productPanel1);
+        readDataBase(insidePanel);
         scrollPanel.add(insidePanel);
-        
+        insidePanel.setPreferredSize(new Dimension(1200, insidePanel.getPreferredSize().height));
+
+        scrollPanel.setViewportView(insidePanel); // Adicione o painel dentro do JScrollPane
+        jPanel1.setBounds(400, 500, 500, 250);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -166,4 +177,46 @@ public class AdicionarTela extends javax.swing.JFrame {
     private javax.swing.JButton removeButton;
     private java.awt.ScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
+
+    public static List<String> readFileByLine(String filePath) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
+    public static String[] splitByComma(String line) {
+        return line.split(",");
+    }
+    public static void readDataBase(JPanel insidePanel) {
+        String filePath = "src/main/java/my_package/DataBase.txt";  // Substitua pelo caminho correto do seu arquivo
+    
+        try {
+            // Lendo o arquivo linha por linha
+            List<String> lines = readFileByLine(filePath);
+    
+            for (String line : lines) {
+                // Dividindo cada linha por vírgula
+                String[] parts = splitByComma(line);
+    
+                // Criando um novo painel de produto com as partes do texto
+                ProductPanel productPanel = new ProductPanel();
+                
+        
+                // Adicionando o painel do produto a insidePanel
+                insidePanel.add(productPanel);
+            }
+    
+            // Atualiza a interface para refletir as mudanças
+            insidePanel.revalidate();
+            insidePanel.repaint();
+    
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        }
+    }
+
 }

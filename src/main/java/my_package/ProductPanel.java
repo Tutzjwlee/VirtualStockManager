@@ -29,11 +29,11 @@ public class ProductPanel extends javax.swing.JPanel {
         productText = new javax.swing.JTextField();
         qtdText = new javax.swing.JTextField();
         priceText = new javax.swing.JTextField();
-        entryText = new javax.swing.JTextField();
-        exitText = new javax.swing.JTextField();
-        entryText1 = new javax.swing.JTextField();
-        exitText1 = new javax.swing.JTextField();
-        exitText2 = new javax.swing.JTextField();
+        unitPv = new javax.swing.JTextField();
+        totalValue = new javax.swing.JTextField();
+        date = new javax.swing.JTextField();
+        qtdChanged = new javax.swing.JTextField();
+        totalPv = new javax.swing.JTextField();
 
         
 
@@ -58,36 +58,36 @@ public class ProductPanel extends javax.swing.JPanel {
             }
         });
 
-        entryText.setText("Unit Pv");
-        entryText.addActionListener(new java.awt.event.ActionListener() {
+        unitPv.setText("Unit Pv");
+        unitPv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 entryTextActionPerformed(evt);
             }
         });
 
-        exitText.setText("Total Value");
-        exitText.addActionListener(new java.awt.event.ActionListener() {
+        totalValue.setText("Total Value");
+        totalValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitTextActionPerformed(evt);
             }
         });
 
-        entryText1.setText("Entry ou Exit Date");
-        entryText1.addActionListener(new java.awt.event.ActionListener() {
+        date.setText("Entry ou Exit Date");
+        date.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 entryText1ActionPerformed(evt);
             }
         });
 
-        exitText1.setText("Qtd added or sub");
-        exitText1.addActionListener(new java.awt.event.ActionListener() {
+        qtdChanged.setText("Qtd added or sub");
+        qtdChanged.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitText1ActionPerformed(evt);
             }
         });
 
-        exitText2.setText("Total Pv");
-        exitText2.addActionListener(new java.awt.event.ActionListener() {
+        totalPv.setText("Total Pv");
+        totalPv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitText2ActionPerformed(evt);
             }
@@ -105,15 +105,15 @@ public class ProductPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceText, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(entryText, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(unitPv, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(entryText1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(qtdChanged, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitText2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(totalPv, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitText, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addComponent(totalValue, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -124,11 +124,11 @@ public class ProductPanel extends javax.swing.JPanel {
                     .addComponent(productText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(qtdText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(priceText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(entryText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(entryText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitText2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(unitPv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(qtdChanged, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalPv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalValue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -167,13 +167,52 @@ public class ProductPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField entryText;
-    private javax.swing.JTextField entryText1;
-    private javax.swing.JTextField exitText;
-    private javax.swing.JTextField exitText1;
-    private javax.swing.JTextField exitText2;
+    private javax.swing.JTextField unitPv;
+    private javax.swing.JTextField date;
+    private javax.swing.JTextField totalValue;
+    private javax.swing.JTextField qtdChanged;
+    private javax.swing.JTextField totalPv;
     private javax.swing.JTextField priceText;
     private javax.swing.JTextField productText;
     private javax.swing.JTextField qtdText;
     // End of variables declaration//GEN-END:variables
+    public void setEditable() {
+        productText.setEditable(true);
+        qtdText.setEditable(true);
+        priceText.setEditable(true);
+        unitPv.setEditable(true);
+        totalValue.setEditable(true);
+        date.setEditable(true);
+        qtdChanged.setEditable(true);
+        totalPv.setEditable(true);
+    }
+
+    /**
+     * Define os campos como não editáveis.
+     */
+    public void setEditableFalse() {
+        productText.setEditable(false);
+        qtdText.setEditable(false);
+        priceText.setEditable(false);
+        unitPv.setEditable(false);
+        totalValue.setEditable(false);
+        date.setEditable(false);
+        qtdChanged.setEditable(false);
+        totalPv.setEditable(false);
+    }
+
+    /**
+     * Atualiza os textos dos campos com os valores fornecidos.
+     */
+    public void setText(String produ, String qtd, String price, String totalPvValue, 
+                        String qtdAddSubValue, String totalValueText, String dateText, String unitPvText) {
+        productText.setText(produ);
+        qtdText.setText(qtd);
+        priceText.setText(price);
+        totalPv.setText(totalPvValue);
+        qtdChanged.setText(qtdAddSubValue);
+        totalValue.setText(totalValueText);
+        date.setText(dateText);
+        unitPv.setText(unitPvText);
+    }
 }
