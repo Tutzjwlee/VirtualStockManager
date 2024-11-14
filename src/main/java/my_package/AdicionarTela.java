@@ -114,14 +114,30 @@ public class AdicionarTela extends javax.swing.JFrame {
                 .addGap(60, 60, 60))
         );
         insidePanel.setLayout(new BoxLayout(insidePanel, BoxLayout.Y_AXIS));
+        ProductPanel productPanelLabel = new ProductPanel();
+        productPanelLabel.setEditableFalse();
+        insidePanel.add(productPanelLabel);
+
+
+        Product product = new Product();
+        product.readDataBase();
+        List<String[]> products = product.getProducts();
         
-        readDataBase(insidePanel);
-        scrollPanel.add(insidePanel);
+        for (String[] parts : products) {
+            ProductPanel panel = new ProductPanel();
+            
+            // Define o texto de cada campo do ProductPanel com os dados da linha atual
+            panel.setText(parts[0],parts[1],parts[2],parts[6],parts[5],parts[7],parts[4],parts[3]
+            );
+            
+            // Adiciona o painel ao insidePanel
+            insidePanel.add(panel);
+        }
+        
+        // Configura o tamanho preferido para o insidePanel e adiciona-o ao scrollPane
         insidePanel.setPreferredSize(new Dimension(1200, insidePanel.getPreferredSize().height));
-
-        scrollPanel.setViewportView(insidePanel); // Adicione o painel dentro do JScrollPane
-        jPanel1.setBounds(400, 500, 500, 250);
-
+        scrollPanel.setViewportView(insidePanel);
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -217,6 +233,16 @@ public class AdicionarTela extends javax.swing.JFrame {
         } catch (IOException e) {
             System.err.println("Erro ao ler o arquivo: " + e.getMessage());
         }
+    }
+    public static float calculateTotalPv(String unitPv, String qtd){
+        float pv = Integer.parseInt(unitPv);
+        int qtdNumber = Integer.parseInt(qtd);
+        return pv*qtdNumber;
+    }
+    public static float calculateTotalValue(String unitValue, String qtd){
+        float value = Integer.parseInt(unitValue);
+        int qtdNumber = Integer.parseInt(qtd);
+        return value*qtdNumber;
     }
 
 }
