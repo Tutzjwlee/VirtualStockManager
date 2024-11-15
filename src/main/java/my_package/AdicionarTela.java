@@ -220,7 +220,7 @@ public class AdicionarTela extends javax.swing.JFrame {
     
                 // Criando um novo painel de produto com as partes do texto
                 ProductPanel productPanel = new ProductPanel();
-                
+                productPanel.setEditableFalse();
         
                 // Adicionando o painel do produto a insidePanel
                 insidePanel.add(productPanel);
