@@ -98,9 +98,9 @@ public class ProductPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addGap(15, 15, 15)
                 .addComponent(productText, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addGap(15, 15, 15)
                 .addComponent(qtdText, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceText, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -130,7 +130,11 @@ public class ProductPanel extends javax.swing.JPanel {
                     .addComponent(totalPv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalValue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
+                
         );
+        setEditableFalse();
+        repaint();
+        revalidate();
     }// </editor-fold>//GEN-END:initComponents
 
     private void productTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productTextActionPerformed
@@ -192,14 +196,30 @@ public class ProductPanel extends javax.swing.JPanel {
      */
     public void setEditableFalse() {
         productText.setEditable(false);
+        productText.setFocusable(false);
+    
         qtdText.setEditable(false);
+        qtdText.setFocusable(false);
+    
         priceText.setEditable(false);
+        priceText.setFocusable(false);
+    
         unitPv.setEditable(false);
+        unitPv.setFocusable(false);
+    
         totalValue.setEditable(false);
+        totalValue.setFocusable(false);
+    
         date.setEditable(false);
+        date.setFocusable(false);
+    
         qtdChanged.setEditable(false);
+        qtdChanged.setFocusable(false);
+    
         totalPv.setEditable(false);
+        totalPv.setFocusable(false);
     }
+    
 
     /**
      * Atualiza os textos dos campos com os valores fornecidos.
@@ -215,4 +235,5 @@ public class ProductPanel extends javax.swing.JPanel {
         date.setText(dateText);
         unitPv.setText(unitPvText);
     }
+    
 }

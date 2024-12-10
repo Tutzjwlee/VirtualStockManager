@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,18 +120,34 @@ public class AdicionarTela extends javax.swing.JFrame {
         productPanelLabel.setEditableFalse();
         insidePanel.add(productPanelLabel);
 
-
         Product product = new Product();
         product.readDataBase();
         List<String[]> products = product.getProducts();
+        ArrayList<ProductPanel> panels = new ArrayList<>();
         
+        // Adiciona um MouseListener para cada painel
         for (String[] parts : products) {
             ProductPanel panel = new ProductPanel();
-            
+        
             // Define o texto de cada campo do ProductPanel com os dados da linha atual
-            panel.setText(parts[0],parts[1],parts[2],parts[6],parts[5],parts[7],parts[4],parts[3]
-            );
-            
+            panel.setText(parts[0], parts[1], parts[2], parts[6], parts[5], parts[7], parts[4], parts[3]);
+        
+            // Adiciona o painel à lista
+            panels.add(panel);
+        
+            // Configura o comportamento de seleção
+            panel.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    // Deselect all panels
+                    for (ProductPanel p : panels) {
+                        p.setBackground(null); // Cor padrão
+                    }
+                    // Select the clicked panel
+                    panel.setBackground(java.awt.Color.LIGHT_GRAY); // Cor de seleção
+                }
+            });
+        
             // Adiciona o painel ao insidePanel
             insidePanel.add(panel);
         }
@@ -243,6 +261,21 @@ public class AdicionarTela extends javax.swing.JFrame {
         float value = Integer.parseInt(unitValue);
         int qtdNumber = Integer.parseInt(qtd);
         return value*qtdNumber;
+    }
+     public static void removeLine(String filePath, int lineToRemove) throws IOException {
+        // Lê todas as linhas do arquivo
+        List<String> lines = Files.readAllLines(Paths.get(filePath));
+        
+        // Verifica se o índice fornecido é válido
+        if (lineToRemove < 0 || lineToRemove >= lines.size()) {
+            throw new IllegalArgumentException("Índice da linha fora do intervalo válido.");
+        }
+        
+        // Remove a linha especificada
+        lines.remove(lineToRemove);
+        
+        // Escreve as linhas atualizadas de volta no arquivo
+        Files.write(Paths.get(filePath), lines);
     }
 
 }
