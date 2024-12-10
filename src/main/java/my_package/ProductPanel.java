@@ -12,6 +12,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ProductPanel
+     * 
      */
     public ProductPanel() {
         initComponents();
@@ -34,7 +35,7 @@ public class ProductPanel extends javax.swing.JPanel {
         date = new javax.swing.JTextField();
         qtdChanged = new javax.swing.JTextField();
         totalPv = new javax.swing.JTextField();
-
+        
         
 
         productText.setText("Product Name");
@@ -234,6 +235,10 @@ public class ProductPanel extends javax.swing.JPanel {
         totalValue.setText(totalValueText);
         date.setText(dateText);
         unitPv.setText(unitPvText);
+    }
+
+    public String getProductName(){
+        return productText.getText();
     }
     
 }
