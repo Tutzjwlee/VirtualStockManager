@@ -7,10 +7,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class AdicionarTela extends javax.swing.JFrame {
@@ -185,6 +189,54 @@ private void removeLineFromFile(String productName) {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO: Implementar funcionalidade de adicionar novo painel
+    }
+
+    private void AddProductToFile(String filePath) throws IOException{
+        String item1 = JOptionPane.showInputDialog("Enter the first item:");
+        String item2 = JOptionPane.showInputDialog("Enter the second item:");
+        String item3 = JOptionPane.showInputDialog("Enter the third item:");
+
+        if (item1 == null || item2 == null || item3 == null) {
+            JOptionPane.showMessageDialog(null, "All items must be provided!");
+            return;
+        }
+
+        String dataToAdd = String.join(",", item1, item2, item3);
+
+        // Read all lines from the file
+        Path path = Paths.get(filePath);
+        if (!Files.exists(path)) {
+            JOptionPane.showMessageDialog(null, "File does not exist!");
+            return;
+        }
+
+        // Insert at the last empty line
+        File file = path.toFile();
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder content = new StringBuilder();
+        String line;
+        boolean added = false;
+
+        while ((line = reader.readLine()) != null) {
+            if (line.trim().isEmpty() && !added) {
+                content.append(dataToAdd).append(System.lineSeparator());
+                added = true;
+            }
+            content.append(line).append(System.lineSeparator());
+        }
+
+        reader.close();
+
+        if (!added) {
+            content.append(System.lineSeparator()).append(dataToAdd);
+        }
+
+        // Write the modified content back to the file
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(content.toString());
+        writer.close();
+
+        JOptionPane.showMessageDialog(null, "Data added successfully!");
     }
 
     public static void main(String args[]) {
