@@ -1,6 +1,5 @@
 package my_package;
 
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
@@ -65,9 +65,16 @@ public class AdicionarTela extends javax.swing.JFrame {
             insidePanel.add(panel);
         }
 
-        // Configura o tamanho preferido do insidePanel e adiciona ao scrollPanel
-        insidePanel.setPreferredSize(new Dimension(1200, insidePanel.getPreferredSize().height));
+       
+        insidePanel.revalidate();
+        insidePanel.repaint();
+
+        // Configura o JScrollPane
         scrollPanel.setViewportView(insidePanel);
+        scrollPanel.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.getVerticalScrollBar().setUnitIncrement(10);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -82,7 +89,7 @@ public class AdicionarTela extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         editButton.setText("Edit Product");
-
+        
         removeButton.setText("Remove Product");
         removeButton.addActionListener(evt -> removeButtonActionPerformed(evt));
 
@@ -136,6 +143,8 @@ public class AdicionarTela extends javax.swing.JFrame {
 
         pack();
     }
+
+
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedPanel != null) {
             // Obtém o nome do produto para identificar a linha no arquivo
@@ -189,56 +198,145 @@ private void removeLineFromFile(String productName) {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO: Implementar funcionalidade de adicionar novo painel
-    }
+        String dataString = "";
+        String filePath = "src/main/java/my_package/DataBase.txt";
+        String QtdAddSub = "0";
 
-    private void AddProductToFile(String filePath) throws IOException{
-        String item1 = JOptionPane.showInputDialog("Enter the first item:");
-        String item2 = JOptionPane.showInputDialog("Enter the second item:");
-        String item3 = JOptionPane.showInputDialog("Enter the third item:");
+        String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
+        String positiveIntPattern = "\\d+";                 // Inteiro positivo
+        String negativeIntPattern = "-\\d+";                // Inteiro negativo
+        String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
+        String positiveNumberPatter = "^\\d+$";            // Número positivo
 
-        if (item1 == null || item2 == null || item3 == null) {
-            JOptionPane.showMessageDialog(null, "All items must be provided!");
-            return;
+        String productName = "";
+        String Qtd = "";
+        String price = "";
+        String unityPv = "";
+        String date = "";
+
+        while(true){
+            productName = JP("Digite o nome do produto:");
+        if (productName == null){
+            JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
+            
+        } 
+        if (!matchesPattern(productName, ".+")) {
+            JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
+            
         }
-
-        String dataToAdd = String.join(",", item1, item2, item3);
-
-        // Read all lines from the file
-        Path path = Paths.get(filePath);
-        if (!Files.exists(path)) {
-            JOptionPane.showMessageDialog(null, "File does not exist!");
-            return;
+    
+        if(productName != null && matchesPattern(productName, ".+")){
+        dataString += productName + ",";
+        break;
+        }}
+        while(true){
+            
+            Qtd = JP("Digite a quantidade de produtos:");
+        if (Qtd == null) JOptionPane.showMessageDialog(this, "Quantidade inválida.");;
+        if (!matchesPattern(QtdAddSub, positiveIntPattern)) {
+            JOptionPane.showMessageDialog(this, "Quantidade inválida.");
+            
         }
-
-        // Insert at the last empty line
-        File file = path.toFile();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        StringBuilder content = new StringBuilder();
-        String line;
-        boolean added = false;
-
-        while ((line = reader.readLine()) != null) {
-            if (line.trim().isEmpty() && !added) {
-                content.append(dataToAdd).append(System.lineSeparator());
-                added = true;
+        if (matchesPattern(Qtd, positiveIntPattern)&& Qtd != null ) {
+            dataString += Qtd + ",";
+            break;
             }
-            content.append(line).append(System.lineSeparator());
         }
-
-        reader.close();
-
-        if (!added) {
-            content.append(System.lineSeparator()).append(dataToAdd);
+        while(true){
+            price = JP("Digite o preço do produto:");
+            if (price == null)JOptionPane.showMessageDialog(this, "Preço inválido."); 
+            if (!matchesPattern(price, positiveNumberPatter)) {
+                JOptionPane.showMessageDialog(this, "Preço inválido.");
+                
         }
-
-        // Write the modified content back to the file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(content.toString());
-        writer.close();
-
-        JOptionPane.showMessageDialog(null, "Data added successfully!");
+            if (matchesPattern(price, positiveNumberPatter)&& price != null) {
+            dataString += price + ",";
+            break;
+        }
+        }
+        while(true){
+        unityPv = JP("Digite o PV do produto:");
+        if (unityPv == null) JOptionPane.showMessageDialog(this, "PV inválido.");
+        if (!matchesPattern(unityPv, positiveNumberPatter)) {
+            JOptionPane.showMessageDialog(this, "PV inválido.");
+           
+        }
+        if (matchesPattern(unityPv, positiveNumberPatter)&& unityPv != null) {
+            dataString += unityPv + ",";
+            break;
+        }
+        }
+        while (true) { 
+            
+        
+            date = JP("Digite a data de validade do produto (dd/MM/yyyy):");
+            if (date == null) JOptionPane.showMessageDialog(this, "Data inválida.");
+            if (!matchesPattern(date, datePattern)) {
+                JOptionPane.showMessageDialog(this, "Data inválida.");
+            
+             }
+            if (matchesPattern(date, datePattern)&& date != null) {
+                dataString += date + ",";
+                break;
+            }
+     }
+        dataString += QtdAddSub;
+    
+        try {
+            appendToLastEmptyLine(filePath, dataString);
+            ProductPanel panel = new ProductPanel();
+            panel.setText(productName, Qtd, price, QtdAddSub, date, unityPv, calcTotalValue(Qtd, price), calcTotalPV(Qtd, price, unityPv));
+            insidePanel.add(panel);
+            repaint();
+            revalidate();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar o produto: " + e.getMessage());
+        }
+    }
+    public static boolean matchesPattern(String text, String regex) {
+        return Pattern.matches(regex, text);
     }
 
+    public String JP(String text){
+        return JOptionPane.showInputDialog(text);
+    }
+
+    public String calcTotalPV(String qtd, String price, String pv){
+        int qtdInt = Integer.parseInt(qtd);
+       
+        float pvFloat = Float.parseFloat(pv);
+        float totalPv = qtdInt * pvFloat;
+       
+        return totalPv+"";
+    }
+    public String calcTotalValue(String qtd, String price){
+        int qtdInt = Integer.parseInt(qtd);
+        float priceFloat = Float.parseFloat(price);
+        float totalValue = qtdInt * priceFloat;
+        return totalValue+"";
+    }
+    public static void appendToLastEmptyLine(String filePath, String text) throws IOException {
+        // Lê todas as linhas do arquivo
+        Path path = Paths.get(filePath);
+        StringBuilder content = new StringBuilder();
+
+        if (Files.exists(path)) {
+            // Lê o arquivo e mantém as linhas
+            for (String line : Files.readAllLines(path)) {
+                if (!line.isBlank()) {
+                    content.append(line).append(System.lineSeparator());
+                } else {
+                    content.append(System.lineSeparator()); // Adiciona linhas em branco
+                }
+            }
+        }
+
+        // Adiciona o texto na última linha vazia
+        content.append(text).append(System.lineSeparator());
+
+        // Escreve o conteúdo atualizado no arquivo
+        Files.write(path, content.toString().getBytes());
+    }
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdicionarTela().setVisible(true));
     }
