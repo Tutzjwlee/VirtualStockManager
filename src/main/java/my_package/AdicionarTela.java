@@ -224,8 +224,12 @@ private void removeLineFromFile(String productName) {
             JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
             
         }
+        if(!verifyStringInFile(filePath, productName)){
+            JOptionPane.showMessageDialog(this, "Produto já cadastrado.");
+            
+        }
     
-        if(productName != null && matchesPattern(productName, ".+")){
+        if(productName != null && matchesPattern(productName, ".+")&& verifyStringInFile(filePath, productName)){
         dataString += productName + ",";
         break;
         }}
@@ -285,13 +289,42 @@ private void removeLineFromFile(String productName) {
         try {
             appendToLastEmptyLine(filePath, dataString);
             ProductPanel panel = new ProductPanel();
-            panel.setText(productName, Qtd, price, QtdAddSub, date, unityPv, calcTotalValue(Qtd, price), calcTotalPV(Qtd, price, unityPv));
+            panel.setText(productName, Qtd, price, calcTotalPV(Qtd, price, unityPv), QtdAddSub, calcTotalValue(Qtd, price), date, unityPv);
+            panels.add(panel);
+            panel.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    for (ProductPanel p : panels) {
+                        p.setBackground(null); // Cor padrão
+                    }
+                    panel.setBackground(java.awt.Color.LIGHT_GRAY); // Cor de seleção
+                    selectedPanel = panel; // Define o painel selecionado
+                }
+            });
             insidePanel.add(panel);
             repaint();
             revalidate();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Erro ao adicionar o produto: " + e.getMessage());
         }
+    }
+    public static boolean verifyStringInFile(String filePath, String searchString) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Remove espaços e separa as strings por vírgulas
+                String[] values = line.split(",");
+                for (String value : values) {
+                    // Verifica se há correspondência ignorando letras maiúsculas e minúsculas
+                    if (value.trim().equalsIgnoreCase(searchString.trim())) {
+                        return false; // Encontrou um match
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        }
+        return true; // Não encontrou o match
     }
     public static boolean matchesPattern(String text, String regex) {
         return Pattern.matches(regex, text);
