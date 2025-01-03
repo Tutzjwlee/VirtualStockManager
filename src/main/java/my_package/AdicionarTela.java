@@ -370,6 +370,56 @@ private void removeLineFromFile(String productName) {
         // Escreve o conteúdo atualizado no arquivo
         Files.write(path, content.toString().getBytes());
     }
+    
+    
+    public static boolean editLineInFile(String filePath, String searchString) {
+        List<String> lines = new ArrayList<>();
+        boolean lineFound = false;
+
+        try {
+            // Lê todas as linhas do arquivo para a memória
+            lines = Files.readAllLines(Paths.get(filePath));
+
+            for (int i = 0; i < lines.size(); i++) {
+                String line = lines.get(i);
+                if (line.toLowerCase().startsWith(searchString.toLowerCase() + ",")) {
+                    lineFound = true;
+
+                String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
+                String positiveIntPattern = "\\d+";                 // Inteiro positivo
+                String negativeIntPattern = "-\\d+";                // Inteiro negativo
+                String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
+                String positiveNumberPatter = "^\\d+$";            // Número positivo
+                
+                    // Divida os valores para edição
+                    String[] values = line.split(",");
+
+                    // Editar os valores com base no padrão
+                    //values[1] = askForInt("Novo valor para o segundo campo (inteiro):");
+                    //values[2] = askForFloat("Novo valor para o terceiro campo (float):");
+                    //values[3] = askForInt("Novo valor para o quarto campo (inteiro):");
+                    //values[4] = askForDate("Novo valor para o quinto campo (data no formato dd/MM/yyyy):");
+                    //values[5] = askForInt("Novo valor para o sexto campo (inteiro ou negativo):");
+
+                    // Reconstrói a linha editada
+                    lines.set(i, String.join(",", values));
+                    System.out.println("Linha editada com sucesso: " + lines.get(i));
+                    break;
+                }
+            }
+
+            // Grava as alterações de volta no arquivo
+            Files.write(Paths.get(filePath), lines);
+        } catch (IOException e) {
+            System.err.println("Erro ao acessar o arquivo: " + e.getMessage());
+        }
+
+        if (!lineFound) {
+            System.out.println("String não encontrada no arquivo.");
+        }
+        return lineFound;
+    }
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdicionarTela().setVisible(true));
     }
