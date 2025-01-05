@@ -167,22 +167,23 @@ public class AdicionarTela extends javax.swing.JFrame {
     
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO Auto-generated method stub
-                String dataString = "";
-                String filePath = "src/main/java/my_package/DataBase.txt";
-                String QtdAddSub = "0";
+            StringBuilder foundLine = new StringBuilder();
+            String dataString = "";
+            String filePath = "src/main/java/my_package/DataBase.txt";
+            String QtdAddSub = "0";
         
-                String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
-                String positiveIntPattern = "\\d+";                 // Inteiro positivo
-                String negativeIntPattern = "-\\d+";                // Inteiro negativo
-                String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
-                String positiveNumberPatter = "^\\d+$";            // Número positivo
+            String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
+            String positiveIntPattern = "\\d+";                 // Inteiro positivo
+            String negativeIntPattern = "-\\d+";                // Inteiro negativo
+            String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
+            String positiveNumberPatter = "^\\d+$";            // Número positivo
         
         if (selectedPanel != null) {
             // Obtém o nome do produto para identificar a linha no arquivo
             String productName = selectedPanel.getProductName();
             
-            JOptionPane.showConfirmDialog(this, "Deseja editar o produto: " + productName + "?");
-            if(0 == JOptionPane.YES_OPTION){
+           
+            if(0 == JOptionPane.showConfirmDialog(this, "Deseja editar o produto: " + productName + "?")){
     
                 String Qtd = "";
                 String price = "";
