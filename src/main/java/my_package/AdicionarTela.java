@@ -89,7 +89,7 @@ public class AdicionarTela extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         editButton.setText("Edit Product");
-        
+        editButton.addActionListener(evt -> editButtonActionPerformed(evt));
         removeButton.setText("Remove Product");
         removeButton.addActionListener(evt -> removeButtonActionPerformed(evt));
 
@@ -144,6 +144,75 @@ public class AdicionarTela extends javax.swing.JFrame {
         pack();
     }
 
+     // Método para encontrar uma string no arquivo, salvar a linha e retornar o número da linha
+     public static int findStringInFile(String filePath, String searchString, StringBuilder foundLine) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        int lineNumber = 0;
+
+        while ((line = reader.readLine()) != null) {
+            lineNumber++;
+            if (line.contains(searchString)) {
+                foundLine.append(line); // Salva o conteúdo da linha na StringBuilder
+                System.out.println("String encontrada na linha " + lineNumber + ": " + line);
+                reader.close();
+                return lineNumber; // Retorna o número da linha onde a string foi encontrada
+            }
+        }
+
+        reader.close();
+        System.out.println("String não encontrada no arquivo.");
+        return -1; // Retorna -1 se a string não for encontrada
+    }
+    
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO Auto-generated method stub
+                String dataString = "";
+                String filePath = "src/main/java/my_package/DataBase.txt";
+                String QtdAddSub = "0";
+        
+                String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
+                String positiveIntPattern = "\\d+";                 // Inteiro positivo
+                String negativeIntPattern = "-\\d+";                // Inteiro negativo
+                String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
+                String positiveNumberPatter = "^\\d+$";            // Número positivo
+        
+        if (selectedPanel != null) {
+            // Obtém o nome do produto para identificar a linha no arquivo
+            String productName = selectedPanel.getProductName();
+            
+            JOptionPane.showConfirmDialog(this, "Deseja editar o produto: " + productName + "?");
+            if(0 == JOptionPane.YES_OPTION){
+    
+                String Qtd = "";
+                String price = "";
+                String unityPv = "";
+                String date = "";
+        
+                while(true){
+                    productName = JP("Digite o novo nome do produto:");
+                if (productName == null){
+                    JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
+                    
+                } 
+                if (!matchesPattern(productName, ".+")) {
+                    JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
+                    
+                }
+                if(!verifyStringInFile(filePath, productName)){
+                    JOptionPane.showMessageDialog(this, "Produto já cadastrado.");
+                    
+                }
+                if(productName != null && matchesPattern(productName, ".+")&& verifyStringInFile(filePath, productName)){
+                    break;
+                }
+            }
+        }
+            
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nenhum painel selecionado para remover.");
+        }
+    }
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedPanel != null) {
@@ -372,54 +441,7 @@ private void removeLineFromFile(String productName) {
     }
     
     
-    public static boolean editLineInFile(String filePath, String searchString) {
-        List<String> lines = new ArrayList<>();
-        boolean lineFound = false;
-
-        try {
-            // Lê todas as linhas do arquivo para a memória
-            lines = Files.readAllLines(Paths.get(filePath));
-
-            for (int i = 0; i < lines.size(); i++) {
-                String line = lines.get(i);
-                if (line.toLowerCase().startsWith(searchString.toLowerCase() + ",")) {
-                    lineFound = true;
-
-                String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
-                String positiveIntPattern = "\\d+";                 // Inteiro positivo
-                String negativeIntPattern = "-\\d+";                // Inteiro negativo
-                String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
-                String positiveNumberPatter = "^\\d+$";            // Número positivo
-                
-                    // Divida os valores para edição
-                    String[] values = line.split(",");
-
-                    // Editar os valores com base no padrão
-                    //values[1] = askForInt("Novo valor para o segundo campo (inteiro):");
-                    //values[2] = askForFloat("Novo valor para o terceiro campo (float):");
-                    //values[3] = askForInt("Novo valor para o quarto campo (inteiro):");
-                    //values[4] = askForDate("Novo valor para o quinto campo (data no formato dd/MM/yyyy):");
-                    //values[5] = askForInt("Novo valor para o sexto campo (inteiro ou negativo):");
-
-                    // Reconstrói a linha editada
-                    lines.set(i, String.join(",", values));
-                    System.out.println("Linha editada com sucesso: " + lines.get(i));
-                    break;
-                }
-            }
-
-            // Grava as alterações de volta no arquivo
-            Files.write(Paths.get(filePath), lines);
-        } catch (IOException e) {
-            System.err.println("Erro ao acessar o arquivo: " + e.getMessage());
-        }
-
-        if (!lineFound) {
-            System.out.println("String não encontrada no arquivo.");
-        }
-        return lineFound;
-    }
-
+ 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdicionarTela().setVisible(true));
     }
