@@ -11,7 +11,7 @@ package my_package;
 public class ProductPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form ProductPanel
+     * Creates new form ProductPanel    
      * 
      */
     public ProductPanel() {
@@ -240,5 +240,22 @@ public class ProductPanel extends javax.swing.JPanel {
     public String getProductName(){
         return productText.getText();
     }
+    public String getQtd(){
+        return qtdText.getText();
+    }
+    public String getPrice(){
+        return priceText.getText();
+    }
+    public String getUnitPv(){
+        return unitPv.getText();
+    }
+
+    public String getDate(){
+        return date.getText();
+    }
+    public String getQtdChanged(){
+        return qtdChanged.getText();
+    }
+  
     
 }

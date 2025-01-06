@@ -145,7 +145,7 @@ public class AdicionarTela extends javax.swing.JFrame {
     }
 
      // Método para encontrar uma string no arquivo, salvar a linha e retornar o número da linha
-     public static int findStringInFile(String filePath, String searchString, StringBuilder foundLine) throws IOException {
+     public int findStringInFile(String filePath, String searchString, StringBuilder foundLine) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
         int lineNumber = 0;
@@ -153,7 +153,8 @@ public class AdicionarTela extends javax.swing.JFrame {
         while ((line = reader.readLine()) != null) {
             lineNumber++;
             if (line.contains(searchString)) {
-                foundLine.append(line); // Salva o conteúdo da linha na StringBuilder
+                foundLine.setLength(0); // Garante que o StringBuilder está limpo antes de usar
+                foundLine.append(line); // Salva o conteúdo da linha no StringBuilder
                 System.out.println("String encontrada na linha " + lineNumber + ": " + line);
                 reader.close();
                 return lineNumber; // Retorna o número da linha onde a string foi encontrada
@@ -164,56 +165,166 @@ public class AdicionarTela extends javax.swing.JFrame {
         System.out.println("String não encontrada no arquivo.");
         return -1; // Retorna -1 se a string não for encontrada
     }
-    
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO Auto-generated method stub
-            StringBuilder foundLine = new StringBuilder();
-            String dataString = "";
-            String filePath = "src/main/java/my_package/DataBase.txt";
-            String QtdAddSub = "0";
-        
-            String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
-            String positiveIntPattern = "\\d+";                 // Inteiro positivo
-            String negativeIntPattern = "-\\d+";                // Inteiro negativo
-            String positiveFloatPattern = "\\d+\\.\\d+";        // Float positivo
-            String positiveNumberPatter = "^\\d+$";            // Número positivo
-        
-        if (selectedPanel != null) {
-            // Obtém o nome do produto para identificar a linha no arquivo
-            String productName = selectedPanel.getProductName();
-            
-           
-            if(0 == JOptionPane.showConfirmDialog(this, "Deseja editar o produto: " + productName + "?")){
-    
-                String Qtd = "";
-                String price = "";
-                String unityPv = "";
-                String date = "";
-        
-                while(true){
-                    productName = JP("Digite o novo nome do produto:");
-                if (productName == null){
-                    JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
-                    
-                } 
-                if (!matchesPattern(productName, ".+")) {
-                    JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
-                    
-                }
-                if(!verifyStringInFile(filePath, productName)){
-                    JOptionPane.showMessageDialog(this, "Produto já cadastrado.");
-                    
-                }
-                if(productName != null && matchesPattern(productName, ".+")&& verifyStringInFile(filePath, productName)){
-                    break;
-                }
+    public static String[] splitString(String input) {
+        if (input == null || input.isEmpty()) {
+            return new String[0]; // Retorna um array vazio se a string for nula ou vazia
+        }
+        return input.split(",");
+    }
+    public static void replaceLineInFile(String filePath, int lineNumber, String newLineContent) throws IOException {
+        File file = new File(filePath);
+        List<String> lines = new ArrayList<>();
+
+        // Lê todas as linhas do arquivo
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        int currentLine = 0;
+
+        while ((line = reader.readLine()) != null) {
+            currentLine++;
+            if (currentLine == lineNumber) {
+                // Substitui a linha desejada pelo novo conteúdo
+                lines.add(newLineContent);
+            } else {
+                lines.add(line); // Mantém as outras linhas inalteradas
             }
         }
-            
+
+        reader.close();
+
+        // Reescreve o arquivo com o novo conteúdo
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        for (String fileLine : lines) {
+            writer.write(fileLine);
+            writer.newLine();
+        }
+
+        writer.close();
+        System.out.println("Linha " + lineNumber + " substituída com sucesso.");
+    }
+    public void editButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+        String filePath = "src/main/java/my_package/DataBase.txt";
+        int lineNumber = 0;
+        StringBuilder foundLine = new StringBuilder();
+    
+        if (selectedPanel != null) {
+            String productName = selectedPanel.getProductName();
+            String newProductName = "", Qtd = "", price = "", unityPv = "", date = "", QtdAddSub = "";
+           
+    
+            try {
+                lineNumber = findStringInFile(filePath, productName, foundLine);
+                String[] values = splitString(foundLine.toString());
+                Qtd = values[1];
+                price = values[2];
+                unityPv = values[3];
+                date = values[4];
+                
+                int newQtd = Integer.parseInt(Qtd);
+                if (JOptionPane.showConfirmDialog(this, "Deseja editar o produto: " + productName + "?") == 0) {
+                    // Loop para editar o nome do produto
+                    while (true) {
+                        newProductName = JOptionPane.showInputDialog("Digite o nome do produto (ou deixe vazio para manter o nome atual):");
+                        
+                        if (newProductName == null) {
+                            // Se o usuário cancelar, manter o nome atual
+                            newProductName = productName;
+                            break;
+                        } else if (newProductName.trim().isEmpty()) {
+                            // Se o usuário não digitar nada, manter o nome atual
+                            newProductName = productName;
+                            break;
+                        } else if (verifyStringInFile(filePath, newProductName)) {
+                            // Se o nome já existir, mostrar mensagem de erro e continuar o loop
+                            JOptionPane.showMessageDialog(this, "Produto já cadastrado. Por favor, insira um nome diferente.");
+                        } if (newProductName != null && matchesPattern(newProductName, ".+") && verifyStringInFile(filePath, newProductName)) {
+                            // Nome válido e não existente, sair do loop
+                            break;
+                        }
+                    }
+                    
+                    // Entrada e validação para o preço
+                    while (true) {
+                        price = JOptionPane.showInputDialog("Digite o preço do produto:");
+                        if (price == null || !matchesPattern(price, "\\d+(\\.\\d+)?")) {
+                            JOptionPane.showMessageDialog(this, "Preço inválido.");
+                        } else {
+                            break;
+                        }
+                    }
+    
+                    // Entrada e validação para o PV
+                    while (true) {
+                        unityPv = JOptionPane.showInputDialog("Digite o PV do produto:");
+                        if (unityPv == null || !matchesPattern(unityPv, "\\d+(\\.\\d+)?")) {
+                            JOptionPane.showMessageDialog(this, "PV inválido.");
+                        } else {
+                            break;
+                        }
+                    }
+    
+                    // Adição ou subtração de quantidade
+                    if (JOptionPane.showConfirmDialog(this, "Deseja adicionar ou subtrair de " + productName + "?") == JOptionPane.YES_OPTION) {
+                        String[] options = {"Adicionar", "Subtrair"};
+                        int choice = JOptionPane.showOptionDialog(null, "Escolha uma opção:", "Operação",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    
+                        if (choice != JOptionPane.CLOSED_OPTION) {
+                            while (true) {
+                                QtdAddSub = JOptionPane.showInputDialog(choice == 0 ? "Digite a quantidade a ser adicionada:" : "Digite a quantidade a ser subtraída:");
+                                if (QtdAddSub == null || !matchesPattern(QtdAddSub, "\\d+")) {
+                                    JOptionPane.showMessageDialog(this, "Quantidade inválida.");
+                                    QtdAddSub = "0"; // Define como 0 em caso de cancelamento ou entrada inválida
+                                } else {
+                                    int currentQtd = Integer.parseInt(Qtd);
+                                    int adjustment = choice == 0 ? Integer.parseInt(QtdAddSub) : -Integer.parseInt(QtdAddSub);
+                                    newQtd = currentQtd + adjustment;
+                                    if (newQtd < 0) {
+                                        JOptionPane.showMessageDialog(this, "Quantidade inválida.");
+                                        QtdAddSub = "0"; // Define como 0 se o resultado for negativo
+                                    } else {
+                                        QtdAddSub = (choice == 0 ? "+" : "-") + QtdAddSub;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            QtdAddSub = "0"; // Define como 0 se o usuário fechar a caixa de opções
+                        }
+                    } else {
+                        QtdAddSub = "0"; // Define como 0 se o usuário clicar em "Não"
+                    }
+    
+                    // Entrada e validação para a data
+                    while (true) {
+                        date = JOptionPane.showInputDialog("Digite a data da última entrada ou saída do produto (dd/MM/yyyy):");
+                        if (date == null || !matchesPattern(date, "\\d{2}/\\d{2}/\\d{4}")) {
+                            JOptionPane.showMessageDialog(this, "Data inválida.");
+                        } else {
+                            break;
+                        }
+                    }
+    
+                    // Construção da nova linha de dados
+                    String dataString = String.join(",", newProductName, String.valueOf(newQtd), price, unityPv, date, QtdAddSub);
+    
+                    // Substituição da linha no arquivo e atualização do painel
+                    replaceLineInFile(filePath, lineNumber, dataString);
+                    selectedPanel.setText(newProductName, String.valueOf(newQtd), price, calcTotalPV(String.valueOf(newQtd), price, unityPv), QtdAddSub, calcTotalValue(String.valueOf(newQtd), price), date, unityPv);
+                    selectedPanel.setBackground(null);
+                    selectedPanel = null;
+                    repaint();
+                    revalidate();
+    
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao editar o produto: " + e.getMessage());
+            }
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Nenhum painel selecionado para remover.");
+            JOptionPane.showMessageDialog(this, "Nenhum painel selecionado para editar.");
         }
     }
+    
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         if (selectedPanel != null) {
@@ -285,23 +396,27 @@ private void removeLineFromFile(String productName) {
         String date = "";
 
         while(true){
-            productName = JP("Digite o nome do produto:");
-        if (productName == null){
+            productName = JOptionPane.showInputDialog("Digite o nome do produto:");
+            if(JOptionPane.CANCEL_OPTION == 0){
+            
+                break;
+            }
+            if (productName == null && JOptionPane.CANCEL_OPTION != 0){
             JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
             
-        } 
-        if (!matchesPattern(productName, ".+")) {
-            JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
+            } 
+            if (!matchesPattern(productName, ".+")) {
+                JOptionPane.showMessageDialog(this, "Nome do produto inválido.");
             
-        }
-        if(!verifyStringInFile(filePath, productName)){
-            JOptionPane.showMessageDialog(this, "Produto já cadastrado.");
+            }
+            if(!verifyStringInFile(filePath, productName)){
+                JOptionPane.showMessageDialog(this, "Produto já cadastrado.");
             
-        }
+            }
     
-        if(productName != null && matchesPattern(productName, ".+")&& verifyStringInFile(filePath, productName)){
-        dataString += productName + ",";
-        break;
+            if(productName != null && matchesPattern(productName, ".+")&& verifyStringInFile(filePath, productName)){
+                dataString += productName + ",";
+                break;
         }}
         while(true){
             
