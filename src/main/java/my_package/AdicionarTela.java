@@ -330,20 +330,31 @@ public class AdicionarTela extends javax.swing.JFrame {
         if (selectedPanel != null) {
             // Obtém o nome do produto para identificar a linha no arquivo
             String productName = selectedPanel.getProductName();
+            
+            // Exibe uma caixa de diálogo para confirmar a remoção
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                    "Tem certeza de que deseja remover o produto: " + productName + "?",
+                    "Confirmação de Remoção",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
     
-            // Remove o painel da interface
-            insidePanel.remove(selectedPanel);
-            panels.remove(selectedPanel);
-            insidePanel.revalidate();
-            insidePanel.repaint();
-            selectedPanel = null;
+            // Se o usuário confirmar a remoção
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                // Remove o painel da interface
+                insidePanel.remove(selectedPanel);
+                panels.remove(selectedPanel);
+                insidePanel.revalidate();
+                insidePanel.repaint();
+                selectedPanel = null;
     
-            // Chama o método para remover a linha do arquivo
-            removeLineFromFile(productName);
+                // Chama o método para remover a linha do arquivo
+                removeLineFromFile(productName);
+            }
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Nenhum painel selecionado para remover.");
         }
     }
+    
     /**
  * Remove uma linha do arquivo com base no nome do produto.
  * @param productName Nome do produto a ser removido do arquivo.
