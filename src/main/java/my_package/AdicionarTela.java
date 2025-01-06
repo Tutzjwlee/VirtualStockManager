@@ -68,6 +68,8 @@ public class AdicionarTela extends javax.swing.JFrame {
        
         insidePanel.revalidate();
         insidePanel.repaint();
+      
+
 
         // Configura o JScrollPane
         scrollPanel.setViewportView(insidePanel);
@@ -127,7 +129,7 @@ public class AdicionarTela extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1250, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(50, 50, 50))
         );
@@ -246,7 +248,7 @@ public class AdicionarTela extends javax.swing.JFrame {
                     // Entrada e validação para o preço
                     while (true) {
                         price = JOptionPane.showInputDialog("Digite o preço do produto:");
-                        if (price == null || !matchesPattern(price, "\\d+(\\.\\d+)?")) {
+                        if (price == null || !matchesPattern(price, "^\\d+$")) {
                             JOptionPane.showMessageDialog(this, "Preço inválido.");
                         } else {
                             break;
@@ -256,7 +258,7 @@ public class AdicionarTela extends javax.swing.JFrame {
                     // Entrada e validação para o PV
                     while (true) {
                         unityPv = JOptionPane.showInputDialog("Digite o PV do produto:");
-                        if (unityPv == null || !matchesPattern(unityPv, "\\d+(\\.\\d+)?")) {
+                        if (unityPv == null || !matchesPattern(unityPv, "^\\d+$")) {
                             JOptionPane.showMessageDialog(this, "PV inválido.");
                         } else {
                             break;
