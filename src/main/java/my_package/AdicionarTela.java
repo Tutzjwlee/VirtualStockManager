@@ -205,7 +205,7 @@ public class AdicionarTela extends javax.swing.JFrame {
         System.out.println("Linha " + lineNumber + " substituída com sucesso.");
     }
     public void editButtonActionPerformed(java.awt.event.ActionEvent evt) { 
-        String filePath = "src/main/java/my_package/DataBase.txt";
+        String filePath = getFilePath("DataBase.txt");
         int lineNumber = 0;
         StringBuilder foundLine = new StringBuilder();
     
@@ -362,8 +362,8 @@ public class AdicionarTela extends javax.swing.JFrame {
  * @param productName Nome do produto a ser removido do arquivo.
  */
 private void removeLineFromFile(String productName) {
-    File inputFile = new File("src/main/java/my_package/DataBase.txt");
-    File tempFile = new File("src/main/java/my_package/temp_DataBase.txt");
+    File inputFile = new File(getFilePath("DataBase.txt"));
+    File tempFile = new File(getFilePath("temp_DataBase.txt"));
 
     try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
          BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
@@ -393,7 +393,7 @@ private void removeLineFromFile(String productName) {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO: Implementar funcionalidade de adicionar novo painel
         String dataString = "";
-        String filePath = "src/main/java/my_package/DataBase.txt";
+        String filePath = getFilePath("DataBase.txt");
         String QtdAddSub = "0";
 
         String datePattern = "\\d{2}/\\d{2}/\\d{4}";        // Data no formato dd/MM/yyyy
@@ -569,7 +569,15 @@ private void removeLineFromFile(String productName) {
         Files.write(path, content.toString().getBytes());
     }
     
-    
+    public static String getFilePath( String fileName){
+        try {
+            String jarDir = new File(AdicionarTela.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+            return new File(jarDir, fileName).getPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return fileName;
+        }
+    }
  
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdicionarTela().setVisible(true));
